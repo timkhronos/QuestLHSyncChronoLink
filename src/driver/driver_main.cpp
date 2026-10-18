@@ -292,7 +292,7 @@ static std::string GetStr(vr::PropertyContainerHandle_t c, vr::ETrackedDevicePro
 static std::string StreamerName(const std::string &driver) {
   static const char *const names[][2] = {{"oculus_virtualdesktop", "Virtual Desktop"}, {"oculus", "Quest Link"},
                                          {"creolecast", "CreoleCast"}, {"vrlink", "Steam Link"},
-                                         {"alvr_server", "ALVR"}};
+                                         {"alvr_server", "ALVR"},   {"chronolink", "ChronoLink"}};
   for (auto &n : names)
     if (driver == n[0]) return n[1];
   return driver;
@@ -418,13 +418,13 @@ class Provider : public vr::IServerTrackedDeviceProvider {
           hmd_system_ = StreamerName(sys);
           g_sync->SetStreamer(sys);
           Log(Fmt("HMD %u: %s via %s%s", i, hmd_model_.c_str(), hmd_system_.c_str(), !family.empty() || !any_hmd_ ? "" :
-                  " - not named a Quest Pro, 3, 3S or Steam Frame, used because anyHmd is set"));
+                  " - not named a Quest Pro, 3, 3S, Steam Frame or Galaxy XR, used because anyHmd is set"));
           continue;
         }
         std::lock_guard<std::mutex> g(hmd_m_);
         hmd_model_ = model.empty() ? "headset" : model;
         hmd_system_ = StreamerName(sys);
-        Log(Fmt("HMD %u: %s via %s isn't a Quest Pro, 3, 3S or Steam Frame: idle", i, hmd_model_.c_str(),
+        Log(Fmt("HMD %u: %s via %s isn't a Quest Pro, 3, 3S, Steam Frame or Galaxy XR: idle", i, hmd_model_.c_str(),
                 hmd_system_.c_str()));
       }
       g_kind[i] = kOther;
